@@ -14,20 +14,20 @@ describe('auth API', () => {
     const fetchMock = vi.fn().mockResolvedValue({
       status: 200,
       json: vi.fn().mockResolvedValue({
-        token: 'session-token',
+        token: 'example-token',
         expires_at: '2026-10-01T01:00:00Z',
         username: 'ada',
       }),
     })
     vi.stubGlobal('fetch', fetchMock)
 
-    const result = await login('ada', 'correct horse')
+    const result = await login('ada', 'example-password')
 
     expect(result.status).toBe(200)
     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8000/api/v1/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: 'ada', password: 'correct horse' }),
+      body: JSON.stringify({ username: 'ada', password: 'example-password' }),
     })
   })
 
@@ -41,11 +41,11 @@ describe('auth API', () => {
     })
     vi.stubGlobal('fetch', fetchMock)
 
-    await me('session-token')
+    await me('example-token')
 
     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8000/api/v1/me', {
       method: 'GET',
-      headers: { Authorization: 'Bearer session-token' },
+      headers: { Authorization: 'Bearer example-token' },
       body: undefined,
     })
   })
@@ -54,12 +54,12 @@ describe('auth API', () => {
     const fetchMock = vi.fn().mockResolvedValue({ status: 204 })
     vi.stubGlobal('fetch', fetchMock)
 
-    const result = await logout('session-token')
+    const result = await logout('example-token')
 
     expect(result).toEqual({ status: 204, data: null })
     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8000/api/v1/logout', {
       method: 'POST',
-      headers: { Authorization: 'Bearer session-token' },
+      headers: { Authorization: 'Bearer example-token' },
       body: undefined,
     })
   })

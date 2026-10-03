@@ -4,7 +4,7 @@ import HomePage from './HomePage.jsx'
 import useSession from '../hooks/useSession.js'
 
 const storedSession = {
-  token: 'session-token',
+  token: 'example-token',
   username: 'ada',
   expiresAt: '2026-10-01T01:00:00Z',
 }
@@ -64,7 +64,7 @@ describe('HomePage', () => {
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith('http://localhost:8000/api/v1/logout', {
         method: 'POST',
-        headers: { Authorization: 'Bearer session-token' },
+        headers: { Authorization: 'Bearer example-token' },
         body: undefined,
       })
     })

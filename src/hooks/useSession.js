@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-const SESSION_KEY = 'of-web.token'
+const SESSION_ITEM = 'of-web.token'
 
 function readSession() {
-  const stored = sessionStorage.getItem(SESSION_KEY)
+  const stored = sessionStorage.getItem(SESSION_ITEM)
 
   if (!stored) {
     return null
@@ -16,11 +16,11 @@ function readSession() {
       return session
     }
   } catch {
-    sessionStorage.removeItem(SESSION_KEY)
+    sessionStorage.removeItem(SESSION_ITEM)
     return null
   }
 
-  sessionStorage.removeItem(SESSION_KEY)
+  sessionStorage.removeItem(SESSION_ITEM)
   return null
 }
 
@@ -34,12 +34,12 @@ export default function useSession() {
       expiresAt: result.expires_at,
     }
 
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextSession))
+    sessionStorage.setItem(SESSION_ITEM, JSON.stringify(nextSession))
     setSession(nextSession)
   }
 
   function signOut() {
-    sessionStorage.removeItem(SESSION_KEY)
+    sessionStorage.removeItem(SESSION_ITEM)
     setSession(null)
   }
 

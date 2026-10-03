@@ -19,7 +19,7 @@ function LoginFlow() {
   )
 }
 
-function submitCredentials(username = 'ada', password = 'correct horse') {
+function submitCredentials(username = 'ada', password = 'example-password') {
   fireEvent.change(screen.getByLabelText('Username'), { target: { value: username } })
   fireEvent.change(screen.getByLabelText('Password'), { target: { value: password } })
   fireEvent.click(screen.getByRole('button', { name: 'Sign in' }))
@@ -49,7 +49,7 @@ describe('LoginPage', () => {
     const fetchMock = vi.fn().mockResolvedValue({
       status: 200,
       json: vi.fn().mockResolvedValue({
-        token: 'session-token',
+        token: 'example-token',
         expires_at: '2026-10-01T01:00:00Z',
         username: 'ada',
       }),
@@ -61,14 +61,14 @@ describe('LoginPage', () => {
 
     expect(await screen.findByRole('heading', { name: 'Signed in as ada' })).toBeTruthy()
     expect(JSON.parse(sessionStorage.getItem('of-web.token'))).toEqual({
-      token: 'session-token',
+      token: 'example-token',
       username: 'ada',
       expiresAt: '2026-10-01T01:00:00Z',
     })
     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8000/api/v1/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: 'ada', password: 'correct horse' }),
+      body: JSON.stringify({ username: 'ada', password: 'example-password' }),
     })
   })
 
